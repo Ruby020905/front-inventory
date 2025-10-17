@@ -13,16 +13,15 @@ import { Home } from '../../../dashboard/components/home/home';
 @Component({
   selector: 'app-sidenav',
   imports: [
-    RouterModule,
-    MatIconModule,
-    MatToolbarModule,
-    MatSidenavModule,
-    MatMenuModule,
-    MaterialModule,
-    MatListModule, 
-    CommonModule,
-    Home
-  ],
+    RouterModule,
+    MatIconModule,
+    MatToolbarModule,
+    MatSidenavModule,
+    MatMenuModule,
+    MaterialModule,
+    MatListModule,
+    CommonModule
+],
   templateUrl: './sidenav.html',
   styleUrl: './sidenav.css'
 })
@@ -33,7 +32,7 @@ export class Sidenav implements OnInit {
 
   menuNav = [
     { name: "Home", route: "home", icon: "home" },
-    { name: "Categorias", route: "home", icon: "category" },
+    { name: "Categorias", route: "category", icon: "category" },
     { name: "Productos", route: "home", icon: "production_quantity_limits" },
   ];
 
