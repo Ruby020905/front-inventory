@@ -1,0 +1,57 @@
+<div class="dashboard-container" [class.is-mobile]="mobileQuery.matches">
+<mat-toolbar color="primary" class="primary-background dashboard-toolbar">
+    <button mat-icon-button (click)="snav.toggle()" class="menu-button">
+        <mat-icon>menu</mat-icon>
+    </button>
+    <h1 class="app-name">UNIB.E Kardex De Medicinas E Insumos 2025</h1>
+    
+    <div class="right">
+        <ul>
+            <li>
+                <button mat-icon-button>
+                    <mat-icon>help_outline</mat-icon>
+                </button>
+            </li>
+            <li>
+                <button mat-icon-button [matMenuTriggerFor]="menu">
+                    <mat-icon>person_outline</mat-icon>
+                </button>
+                <mat-menu #menu="matMenu">
+                    <button mat-menu-item>
+                        <mat-icon>exit_to_app</mat-icon>
+                        <span>Cerrar Sesion</span>
+                    </button>
+                </mat-menu>
+            </li>
+        </ul>
+    </div>
+</mat-toolbar>
+
+<mat-sidenav-container class="sidenav-container">
+
+    <mat-sidenav #snav
+               [mode]="'side'"
+               [fixedInViewport]="true"
+               fixedTopGap="56">
+        <mat-nav-list>
+            <div class="profile-card">
+                <div class="hearder">
+                    <h2>Ruby y Angie</h2>
+                    <h4>rubyoforiwa@gmail.com</h4>
+                </div>
+            </div>
+            <mat-divider></mat-divider>
+            <a mat-list-item [routerLink]="nav.route" *ngFor="let nav of menuNav">
+                <mat-icon matListIcon class="icon">{{nav.icon}}</mat-icon>
+                {{nav.name}}
+            </a>
+        </mat-nav-list>
+    </mat-sidenav>
+
+    <mat-sidenav-content>
+        <div class="main-content">
+            <app-home></app-home>
+        </div>
+    </mat-sidenav-content>
+</mat-sidenav-container>
+</div>

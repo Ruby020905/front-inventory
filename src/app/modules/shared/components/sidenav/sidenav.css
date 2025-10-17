@@ -1,0 +1,72 @@
+.primary-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 2;
+    background-color: #132762; 
+}
+
+/* Modificación: apunta directamente a los íconos dentro de la barra de herramientas */
+.primary-background .mat-icon {
+    color: #ffc107; 
+}
+
+h1.app-name {
+    margin-left: 8px;
+    margin-top: 5px;
+    color: #ffc107;
+}
+
+/* Agregué esto para que el contenido de la página no se oculte detrás del toolbar */
+.sidenav-container {
+    height: 100%;
+    margin-top: 56px; /* Altura estándar de un toolbar en móviles */
+}
+
+.dashboard-container {
+    display: flex;
+    flex-direction: column;
+    position: obsolute;
+    top:0;
+    left:0;
+    right: 0;
+    bottom: 0;
+}
+
+.is-mobile .dashboard-toolbar {
+    position: fixed;
+    z-index: 2;
+}
+
+.is-mobile .sidenav-container{
+    flex: 1 0 auto;
+}
+
+
+ul li{
+    list-style: none;
+}
+
+div ul{
+    display: flex;
+    align-items: center;
+}
+
+.right{
+    margin-left: auto;
+}
+
+.profile-card{
+    text-align: center;
+    padding: 0 20px 20px 20px;
+}
+
+.hearder{
+    margin-top: 20px;
+}
+
+.icon mat-icon {
+  margin-right: 10px; /* Para el espacio entre el ícono y el texto */
+  top: 50%;
+}
