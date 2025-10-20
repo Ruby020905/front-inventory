@@ -2,6 +2,9 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MaterialModule } from '../shared/material-module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NewCategory } from './components/new-category/new-category';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 
 
 
@@ -11,7 +14,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     CommonModule, 
     MaterialModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NewCategory,
+    MatFormFieldModule,
+    MatInputModule,
   ]
 })
 export class CategoryModule { }

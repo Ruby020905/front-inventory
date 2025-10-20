@@ -16,5 +16,10 @@ export class CategoryServices {
       const endpoint =  `${base_url}/categories`;
       return this.http.get(endpoint);
     }
-  
+
+    /** Guardar categorias*/
+    saveCategory(body: any){
+      const endpoint =  `${base_url}/categories`;
+      return this.http.post(endpoint, body);
+}
 }

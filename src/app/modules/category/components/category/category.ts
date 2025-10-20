@@ -3,6 +3,9 @@ import { CategoryServices } from '../../../shared/services/category.service';
 import { MatCard, MatCardHeader } from "@angular/material/card";
 import { MaterialModule } from "../../../shared/material-module";
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatDialog } from '@angular/material/dialog';
+import { NewCategory } from '../new-category/new-category';
+import { MatSnackBar, MatSnackBarRef, SimpleSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-category',
@@ -13,10 +16,13 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 })
 export class Category implements OnInit {
    private categoryServices = inject(CategoryServices);
+   private snackbar = inject(MatSnackBar);
+   public dialog =inject(MatDialog);
 
 
   ngOnInit(): void {
     this.getCategories();
+    
   }
 
   displayedColumns: string[] = ['id', 'name', 'description', 'actions'];
@@ -44,6 +50,28 @@ export class Category implements OnInit {
         this.dataSource = new MatTableDataSource<CategoryElement>(dataCategory);
     }
 }
+
+    openCategoryDialog(): void {
+      const dialogRef = this.dialog.open(NewCategory, {
+      width: '450px',
+    });
+
+    dialogRef.afterClosed().subscribe((result:any) => {
+      if(result == 1){
+        this.openSnackBar('Categoría Agregada', 'Exitosa');
+        this.getCategories();
+      }else if (result == 2){
+        this.openSnackBar('Se produce un error al agregar categoría', 'Error');
+      }
+   
+    });
+    }
+
+    openSnackBar(message: string, action: string) : MatSnackBarRef<SimpleSnackBar>{
+      return this.snackbar.open(message, action, {
+        duration: 2000,
+      });
+    }
 }
 
 export interface CategoryElement {
