@@ -27,4 +27,10 @@ export class CategoryServices {
       const endpoint =  `${base_url}/categories/${id}`;
       return this.http.put(endpoint, body);
     }
+
+  /* Eliminar categoria */
+    deleteCategory(id: any){
+      const endpoint =  `${base_url}/categories/${id}`;
+      return this.http.delete(endpoint);
+    }
 }

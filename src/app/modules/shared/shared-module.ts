@@ -4,6 +4,7 @@ import { MaterialModule } from './material-module';
 import { RouterModule } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 import { MatInputModule } from '@angular/material/input';
+import { Confirm } from './components/confirm/confirm';
 
 
 
@@ -18,7 +19,8 @@ import { MatInputModule } from '@angular/material/input';
     MaterialModule,
     RouterModule,
     HttpClientModule,
-    MatInputModule
+    MatInputModule,
+    Confirm
    ]
 })
 export class SharedModule { }

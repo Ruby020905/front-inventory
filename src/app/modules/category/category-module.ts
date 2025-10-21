@@ -5,6 +5,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NewCategory } from './components/new-category/new-category';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { Confirm } from '../shared/components/confirm/confirm';
 
 
 
@@ -18,6 +19,7 @@ import { MatInputModule } from '@angular/material/input';
     NewCategory,
     MatFormFieldModule,
     MatInputModule,
+    Confirm
   ]
 })
 export class CategoryModule { }

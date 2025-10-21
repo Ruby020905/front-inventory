@@ -6,6 +6,7 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatDialog } from '@angular/material/dialog';
 import { NewCategory } from '../new-category/new-category';
 import { MatSnackBar, MatSnackBarRef, SimpleSnackBar } from '@angular/material/snack-bar';
+import { Confirm } from '../../../shared/components/confirm/confirm';
 
 @Component({
   selector: 'app-category',
@@ -78,11 +79,28 @@ export class Category implements OnInit {
         this.openSnackBar('Categoría Actualizada', 'Exitosa');
         this.getCategories();
       }else if (result == 2){
-        this.openSnackBar('Se produce un error al aactualizar categoría', 'Error');
+        this.openSnackBar('Se produce un error al actualizar categoría', 'Error');
       }
    
     });
   }
+
+    delete(id: number) {
+       const dialogRef = this.dialog.open(Confirm, {
+      data: {id:id, },
+    });
+
+    dialogRef.afterClosed().subscribe((result:any) => {
+      if(result == 1){
+        this.openSnackBar('Categoría Eliminada', 'Exitosa');
+        this.getCategories();
+      }else if (result == 2){
+        this.openSnackBar('Se produce un error al eliminar categoría', 'Error');
+      }
+   
+    });
+    }
+
 
     openSnackBar(message: string, action: string) : MatSnackBarRef<SimpleSnackBar>{
       return this.snackbar.open(message, action, {
