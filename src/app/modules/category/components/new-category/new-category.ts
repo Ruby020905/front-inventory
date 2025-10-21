@@ -1,5 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { MatDialogContent, MatDialogActions, MatDialogRef } from "@angular/material/dialog";
+import { MatDialogContent, MatDialogActions, MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
 import { MatFormField, MatHint, MatInputModule, MatLabel } from "@angular/material/input";
 import { MatIcon } from "@angular/material/icon";
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -17,15 +17,22 @@ import { MatButtonModule } from '@angular/material/button';
 export class NewCategory implements OnInit{
 
   public categoryForm!: FormGroup;
+  estadoFormulario: string = "Agregar";
   private fb = inject(FormBuilder);
   private categoryServices = inject(CategoryServices);
   private dialogRef= inject(MatDialogRef);
+  public data = inject(MAT_DIALOG_DATA)
     
     ngOnInit(): void {
       this.categoryForm = this.fb.group({
         name: ['', Validators.required],
         description: ['', Validators.required]
       });
+      if(this.data!= null){
+        this.updateForm(this.data);
+        this.estadoFormulario = "Actualizar";
+      }
+      console.log(this.data);
     }
 
     onSave(){
@@ -44,16 +51,35 @@ export class NewCategory implements OnInit{
       // description: this.categoryForm.value.get('description')?.value 
 
       // Se usa la variable 'data' que ahora contiene { name: '...', description: '...' }
-      this.categoryServices.saveCategory(data)
+      if(this.data != null){
+        // Actualizar categoría existente
+        this.categoryServices.updateCategory(data, this.data.id)
+              .subscribe((data:any)=>{
+                this.dialogRef.close(1);
+              },(error:any) =>{ 
+                this.dialogRef.close(2);
+              })
+                
+      }else{
+        // Crear nueva categoría
+        this.categoryServices.saveCategory(data)
        .subscribe((response:any)=>{ // Usar 'response' en lugar de 'data' es mejor práctica
          console.log(response);
          this.dialogRef.close(1);
        },(error:any)=>{
          this.dialogRef.close(2);
        }) ;
+      }
+      
     }
 
     onCancel(){
-        this.dialogRef.close(0); // Cerrar sin acción (o con un código 0)
+        this.dialogRef.close(3); // Cerrar sin acción (o con un código 0)
+    }
+    updateForm(data:any){
+        this.categoryForm = this.fb.group({
+        name: [data.name, Validators.required],
+        description: [data.description, Validators.required]
+      });
     }
 }
