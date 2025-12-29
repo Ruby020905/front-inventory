@@ -3,6 +3,7 @@ import { Dashboard } from './modules/dashboard/pages/dashboard';
 // Asume que necesitas importar tus componentes Home y Category
 import { Home } from './modules/dashboard/components/home/home'; 
 import { Category } from './modules/category/components/category/category';
+import { Product } from './modules/product/product/product';
 
 export const routes: Routes = [
   // Redirecciona la raíz al dashboard
@@ -24,8 +25,11 @@ export const routes: Routes = [
             path: 'category', 
             component: Category // El componente que mostrará 'category works!'
         },
-        
-        // ... Agrega las otras rutas del Sidenav aquí (ej: 'productos')
-    ]
+
+        // 3. RUTA HIJA DE PRODUCT: Carga Product en /dashboard/product
+        { 
+            path: 'product', 
+            component: Product // El componente que mostrará 'category works!'
+        },    ]
   }
 ];
