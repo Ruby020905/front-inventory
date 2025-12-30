@@ -50,7 +50,7 @@ ngOnInit(): void {
       if (resp.metadata[0].code == "00") {
         let listProduct = resp.product.products
         listProduct.forEach((element: ProductElement )=> {
-          element.category = element.category.name;
+          //element.category = element.category.name;
           element.picture = 'data:image/jpeg;base64,' + element.picture;
           dataProduct.push(element);
         });
@@ -82,7 +82,22 @@ openProductDialag():  void {
       });
     }
 
+    edit(id:number, name:string, category:any, date:Date, type:string, account:string, stock:number, picture:any): void {
+        const dialogRef = this.dialog.open(NewProduct, {
+      width: '450px',
+      data: {id:id, name:name, category:category, date:date, type:type, account:account, stock:stock, picture:picture}
+    });
 
+    dialogRef.afterClosed().subscribe((result:any) => {
+      if(result == 1){
+        this.openSnackBar('Producto Actualizado', 'Exitosa');
+        this.getProducts();
+      }else if (result == 2){
+        this.openSnackBar('Se produce un error al actualizar producto', 'Error');
+      }
+    });
+
+  }
 }
 export interface ProductElement {
     id: number;

@@ -49,6 +49,12 @@ export class NewProduct implements OnInit {
       picture: ['', Validators.required],
     });
 
+     if(this.data!= null){
+        this.updateForm(this.data);
+        this.estadoFormulario = "Actualizar";
+      }
+      console.log(this.data);
+
     // 2. Asignamos el flujo de datos
     this.categories$ = this.categoryServices.getCategories().pipe(
       map((data: any) => data.categoryResponse.category)
@@ -81,6 +87,22 @@ export class NewProduct implements OnInit {
     uploadImageData.append('account', data.account);
     uploadImageData.append('stock', data.stock);
 
+    if(this.data != null){
+      // Llamar al servicio para actualizar el producto
+      this.productService.updateProduct(this.data.id, uploadImageData).subscribe({
+        next: (response) => {
+          console.log('Producto actualizado exitosamente', response);   
+          this.dialogRef.close(1); // Criterio #4: Cerrar para actualizar lista
+        },
+        error: (error) => {
+          console.error('Error al actualizar el producto', error);
+          this.dialogRef.close(2); // Criterio #4: Cerrar para actualizar lista
+
+        }
+      });   
+
+    }
+
     // Llamar al servicio para guardar el producto
 this.productService.saveProduct(uploadImageData).subscribe({
       next: (response) => {
@@ -102,5 +124,17 @@ this.productService.saveProduct(uploadImageData).subscribe({
 
   onCancel() {
     this.dialogRef.close();
+  }
+
+  updateForm(data: any) {
+    this.productForm = this.fb.group({
+      name: [data.name, Validators.required],
+      category: [data.category.id, Validators.required],
+      date: [data.date, Validators.required],
+      type: [data.type, Validators.required],
+      account: [data.account, Validators.required],
+      stock: [data.stock, [Validators.required, Validators.pattern("^[0-9]*$")]], // Validación numérica
+      picture: ['', Validators.required],
+    });
   }
 }
