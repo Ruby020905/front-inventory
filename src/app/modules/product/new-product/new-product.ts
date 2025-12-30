@@ -61,61 +61,54 @@ export class NewProduct implements OnInit {
     );
   }
 
-  onSave() {
-  const dateObj = this.productForm.get('date')?.value;
+onSave() {
+  if (this.productForm.invalid) return;
+
+  // 1. Lógica de la fecha (asegurando objeto Date)
+  const dateValue = this.productForm.get('date')?.value;
+  const dateObj = new Date(dateValue);
+  
   const day = String(dateObj.getDate()).padStart(2, '0');
   const month = String(dateObj.getMonth() + 1).padStart(2, '0');
   const year = dateObj.getFullYear();
-
   const formattedDate = `${day}/${month}/${year}`;
-    let data ={
-      name: this.productForm.get('name')?.value,
-      category: this.productForm.get('category')?.value,
-      date: formattedDate,
-      type: this.productForm.get('type')?.value,
-      account: this.productForm.get('account')?.value,
-      stock: this.productForm.get('stock')?.value,
-      picture: this.selectedFile
-    }
 
-    const uploadImageData = new FormData();
-    uploadImageData.append('picture', data.picture, data.picture.name);
-    uploadImageData.append('name', data.name);
-    uploadImageData.append('CategoryId', data.category);
-    uploadImageData.append('date', formattedDate);
-    uploadImageData.append('type', data.type);
-    uploadImageData.append('account', data.account);
-    uploadImageData.append('stock', data.stock);
+  // 2. Preparar el FormData
+  const uploadImageData = new FormData();
+  uploadImageData.append('name', this.productForm.get('name')?.value);
+  uploadImageData.append('CategoryId', this.productForm.get('category')?.value);
+  uploadImageData.append('date', formattedDate);
+  uploadImageData.append('type', this.productForm.get('type')?.value);
+  uploadImageData.append('account', this.productForm.get('account')?.value);
+  uploadImageData.append('stock', this.productForm.get('stock')?.value);
 
-    if(this.data != null){
-      // Llamar al servicio para actualizar el producto
-      this.productService.updateProduct(this.data.id, uploadImageData).subscribe({
-        next: (response) => {
-          console.log('Producto actualizado exitosamente', response);   
-          this.dialogRef.close(1); // Criterio #4: Cerrar para actualizar lista
-        },
-        error: (error) => {
-          console.error('Error al actualizar el producto', error);
-          this.dialogRef.close(2); // Criterio #4: Cerrar para actualizar lista
-
-        }
-      });   
-
-    }
-
-    // Llamar al servicio para guardar el producto
-this.productService.saveProduct(uploadImageData).subscribe({
-      next: (response) => {
-        console.log('Producto creado exitosamente', response);
-        this.dialogRef.close(true); // Criterio #4: Cerrar para actualizar lista
-      },
-      error: (error) => {
-        console.error('Error al crear el producto', error);
-      }
-    });
-
+  // Solo adjuntar imagen si se seleccionó una nueva
+  if (this.selectedFile) {
+    uploadImageData.append('picture', this.selectedFile, this.selectedFile.name);
   }
 
+  // --- 3. SEPARACIÓN LÓGICA (Aquí evitas el duplicado) ---
+  if (this.data != null) {
+    // CASO ACTUALIZAR
+    this.productService.updateProduct(this.data.id, uploadImageData).subscribe({
+      next: (response) => {
+        console.log('Producto actualizado exitosamente', response);
+        this.dialogRef.close(true);
+      },
+      error: (error) => console.error('Error al actualizar', error)
+    });
+
+  } else {
+    // CASO GUARDAR NUEVO
+    this.productService.saveProduct(uploadImageData).subscribe({
+      next: (response) => {
+        console.log('Producto creado exitosamente', response);
+        this.dialogRef.close(true);
+      },
+      error: (error) => console.error('Error al crear', error)
+    });
+  }
+}
   onFileChanged(event: any) {
     this.selectedFile = event.target.files[0];
     console.log(this.selectedFile);
