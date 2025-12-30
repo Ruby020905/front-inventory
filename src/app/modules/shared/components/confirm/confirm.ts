@@ -23,34 +23,27 @@ export class Confirm implements OnInit{
     onNoClick(){
         this.dialogRef.close(3); // Cerrar sin acción (o con un código 3)
     }
-    delete(){
-      if(this.data != null){
-        // Eliminar categoría existente
-        if(this.data.module === "category"){
-          this.categotryServices.deleteCategory( this.data.id)
-              .subscribe((data:any)=>{
-                this.dialogRef.close(1);
-              },(error:any) =>{
-                this.dialogRef.close(2);
-              });
-        }else if(this.data.module === "product"){
-          this.productService.deleteProduct( this.data.id)
-              .subscribe((data:any)=>{  
-                this.dialogRef.close(1);
-              },(error:any) =>{ 
-                this.dialogRef.close(2);
-              });
-        }
+   
+    delete() {
+  if (this.data != null && this.data.id != null) {
+    
+    if (this.data.module === "category") {
+      // Eliminar categoría
+      this.categotryServices.deleteCategory(this.data.id).subscribe({
+        next: (data: any) => this.dialogRef.close(1),
+        error: (error: any) => this.dialogRef.close(2)
+      });
 
-        this.categotryServices.deleteCategory( this.data.id)
-              .subscribe((data:any)=>{
-                this.dialogRef.close(1);
-              },(error:any) =>{ 
-                this.dialogRef.close(2);
-              });
-      }else{
-        this.dialogRef.close(2); // Cerrar sin acción (o con un código 2)
-      }
-      
-    } 
+    } else if (this.data.module === "product") {
+      // Eliminar producto
+      this.productService.deleteProduct(this.data.id).subscribe({
+        next: (data: any) => this.dialogRef.close(1),
+        error: (error: any) => this.dialogRef.close(2)
+      });
+    }
+
+  } else {
+    this.dialogRef.close(2);
+  }
+}
 }
