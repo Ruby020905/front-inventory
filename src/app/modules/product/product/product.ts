@@ -10,6 +10,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { NewProduct } from '../new-product/new-product';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar, MatSnackBarRef, SimpleSnackBar } from '@angular/material/snack-bar';
+import { Confirm } from '../../shared/components/confirm/confirm';
 
 @Component({
   selector: 'app-product',
@@ -98,6 +99,21 @@ openProductDialag():  void {
     });
 
   }
+     delete(id: number) {
+           const dialogRef = this.dialog.open(Confirm, {
+          data: {id:id, module:"product"},
+        });
+    
+        dialogRef.afterClosed().subscribe((result:any) => {
+          if(result == 1){
+            this.openSnackBar('Producto Eliminado', 'Exitosa');
+            this.getProducts();
+          }else if (result == 2){
+            this.openSnackBar('Se produce un error al eliminar producto', 'Error');
+          }
+       
+        });
+        }
 }
 export interface ProductElement {
     id: number;

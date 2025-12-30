@@ -93,7 +93,7 @@ paginator!: MatPaginator;
 
     delete(id: number) {
        const dialogRef = this.dialog.open(Confirm, {
-      data: {id:id, },
+      data: {id:id, module:"category"},
     });
 
     dialogRef.afterClosed().subscribe((result:any) => {
