@@ -1,0 +1,59 @@
+<h2 mat-dialog-title align="center">{{estadoFormulario}} nuevo producto</h2>
+
+<mat-dialog-content>
+    <form [formGroup]="productForm">
+        <div class="category-container">
+            <mat-form-field>
+                <input matInput placeholder="Nombre" formControlName="name" required/>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Tipo de Medicamento</mat-label>
+                <mat-select formControlName="category" required>
+                    <mat-option *ngFor="let cat of (categories$ | async)" [value]="cat.id">
+                        {{cat.name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field>
+                <input matInput placeholder="Presentacion" formControlName="type" required/>    
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+    <mat-label>Fecha de expiración</mat-label>
+    <input matInput [matDatepicker]="picker" formControlName="date" required>
+    <mat-hint>MM/DD/YYYY</mat-hint>
+    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+</mat-form-field>
+            <mat-form-field>
+                <input matInput placeholder="Unidad" formControlName="account" required/>       
+            </mat-form-field>
+            <mat-form-field>
+                <input matInput type="number" placeholder="Cantidad" formControlName="stock" required/>
+            </mat-form-field>
+              <div class="category-container">
+               <mat-label>Foto: </mat-label> 
+               <label for="file-upload" class="subir">
+                subir archivo
+                <input id="file-upload" 
+                         accept="image/png, image/jpeg"
+                         (change)="onFileChanged($event)"
+                         type="file"
+                         formControlName="picture"
+                         class="input-file"/>
+                         <span>{{nameImg}}</span>
+               </label>
+              </div>
+        </div>
+    </form>
+
+</mat-dialog-content>
+
+<mat-dialog-actions>
+    <button mat-button color="primary" (click)="onSave()" [disabled]="productForm.invalid">
+        <mat-icon>save</mat-icon> Guardar
+    </button>
+
+    <button mat-button color="primary" (click)="onCancel()">
+        <mat-icon>cancel</mat-icon> Cancelar
+    </button>
+</mat-dialog-actions>

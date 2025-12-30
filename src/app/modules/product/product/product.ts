@@ -7,6 +7,9 @@ import { MatFormField, MatInputModule, MatLabel } from "@angular/material/input"
 import { MatIcon, MatIconModule } from "@angular/material/icon";
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
+import { NewProduct } from '../new-product/new-product';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar, MatSnackBarRef, SimpleSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-product',
@@ -18,6 +21,9 @@ import { MatButtonModule } from '@angular/material/button';
 export class Product implements OnInit {
 
     private productService = inject(ProductService);
+    private snackbar = inject(MatSnackBar);
+    public dialog = inject(MatDialog);
+
 
 ngOnInit(): void {
     this.getProducts();
@@ -52,7 +58,31 @@ ngOnInit(): void {
         this.dataSource = new MatTableDataSource<ProductElement>(dataProduct);
         this.dataSource.paginator = this.paginator;
        }  
+       
 }
+
+openProductDialag():  void {
+      const dialogRef = this.dialog.open(NewProduct, {
+      width: '450px',
+    });
+
+    dialogRef.afterClosed().subscribe((result:any) => {
+      if(result == 1){
+        this.openSnackBar('Producto Agregado', 'Exitosa');
+        this.getProducts();
+      }else if (result == 2){
+        this.openSnackBar('Se produce un error al agregar producto', 'Error');
+      }
+    });
+    }
+
+    openSnackBar(message: string, action: string) : MatSnackBarRef<SimpleSnackBar>{
+      return this.snackbar.open(message, action, {
+        duration: 2000,
+      });
+    }
+
+
 }
 export interface ProductElement {
     id: number;

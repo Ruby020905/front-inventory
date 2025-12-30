@@ -1,0 +1,31 @@
+.category-container{
+    display: flex;
+    flex-direction: column;
+}
+
+.category-container > * {
+    width: 100%;
+}
+
+.subir {
+    /* Dimensiones para igualar a Material */
+    height: 52px; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    /* Estética */
+    padding: 0 16px;
+    background-color: #132762;
+    color: #fff;
+    border-radius: 4px; /* Material suele usar 4px */
+    cursor: pointer;
+    font-size: 14px;
+    font-family: inherit;
+    box-sizing: border-box;
+    margin-bottom: 4px; /* Ajuste fino para la alineación con el underline */
+}
+
+.input-file {
+    display: none; /* Oculta el input feo del sistema */
+}

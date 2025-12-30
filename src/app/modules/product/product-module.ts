@@ -9,6 +9,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableModule } from '@angular/material/table';
+import { NewProduct } from './new-product/new-product';
 
 
 
@@ -22,7 +23,11 @@ import { MatTableModule } from '@angular/material/table';
     MatInputModule,
     MatButtonModule,
     MatIconModule,
-    MatCardModule
+    MatCardModule,
+    NewProduct,
+    FormsModule,
+    ReactiveFormsModule,
+    MaterialModule
   ]
 })
 export class ProductModule { }
