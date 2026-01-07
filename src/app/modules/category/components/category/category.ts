@@ -8,11 +8,13 @@ import { NewCategory } from '../new-category/new-category';
 import { MatSnackBar, MatSnackBarRef, SimpleSnackBar } from '@angular/material/snack-bar';
 import { Confirm } from '../../../shared/components/confirm/confirm';
 import { MatPaginator } from '@angular/material/paginator';
+import { Util } from '../../../shared/services/util';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-category',
   standalone: true,
-  imports: [MatCard, MatCardHeader, MaterialModule, MatTableModule],
+  imports: [MatCard, MatCardHeader, MaterialModule, MatTableModule,CommonModule],
   templateUrl: './category.html',
   styleUrls: ['./category.css']
 })
@@ -20,11 +22,13 @@ export class Category implements OnInit {
    private categoryServices = inject(CategoryServices);
    private snackbar = inject(MatSnackBar);
    public dialog =inject(MatDialog);
-
+   private util = inject(Util);
+   
+   isAdmin: any;
 
   ngOnInit(): void {
     this.getCategories();
-    
+    this.isAdmin = this.util.isAdmin();
   }
 
   displayedColumns: string[] = ['id', 'name', 'description', 'actions'];

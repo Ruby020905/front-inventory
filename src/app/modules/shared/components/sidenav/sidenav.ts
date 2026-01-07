@@ -1,5 +1,5 @@
 import { MediaMatcher } from '@angular/cdk/layout';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnInit, ViewChild } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSidenavModule, MatSidenav } from '@angular/material/sidenav';
@@ -9,6 +9,7 @@ import { MaterialModule } from "../../material-module";
 import { MatListModule } from '@angular/material/list';
 import { CommonModule } from '@angular/common';
 import { Home } from '../../../dashboard/components/home/home';
+import { KeycloakService } from 'keycloak-angular';
 
 @Component({
   selector: 'app-sidenav',
@@ -26,7 +27,10 @@ import { Home } from '../../../dashboard/components/home/home';
   styleUrl: './sidenav.css'
 })
 export class Sidenav implements OnInit {
+private keycloakService = inject(KeycloakService);
+private cd = inject(ChangeDetectorRef);
 
+  username: string = 'Cargando...';
 
   mobileQuery: MediaQueryList;
 
@@ -40,7 +44,56 @@ export class Sidenav implements OnInit {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
   }
 
-  ngOnInit(): void {
 
-  }
+  async ngOnInit() {
+  console.log('isLoggedIn:', await this.keycloakService.isLoggedIn());
+  console.log('token:', await this.keycloakService.getToken());
+
+  await this.cargarUsuario();
+}
+
+
+ async cargarUsuario() {
+  try {
+    const token = await this.keycloakService.getToken();
+
+    if (!token) {
+      this.username = 'Invitado';
+      return;
+    }
+
+    const profile = await this.keycloakService.loadUserProfile();
+
+    this.username =
+      profile.firstName ||
+      profile.username ||
+      'Usuario';
+
+  } catch (error) {
+    console.error('Error cargando usuario:', error);
+    this.username = 'Invitado';
+  }
+}
+
+
+
+///cerrar sesión
+async logout() {
+  try {
+    const isLoggedIn = await this.keycloakService.isLoggedIn();
+    
+    if (isLoggedIn) {
+      // Intento normal
+      await this.keycloakService.logout(window.location.origin);
+    } else {
+      console.log("Forzando salida manual...");
+      // Salida manual si la librería no detecta la sesión
+      const logoutUrl = `http://localhost:8082/realms/inventory/protocol/openid-connect/logout?client_id=angular-client&post_logout_redirect_uri=${encodeURIComponent(window.location.origin)}`;
+      window.location.href = logoutUrl;
+    }
+  } catch (error) {
+    console.error("Error en logout:", error);
+  }
+}
+
 }

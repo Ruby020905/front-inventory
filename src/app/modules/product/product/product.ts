@@ -11,23 +11,28 @@ import { NewProduct } from '../new-product/new-product';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar, MatSnackBarRef, SimpleSnackBar } from '@angular/material/snack-bar';
 import { Confirm } from '../../shared/components/confirm/confirm';
+import { Util } from '../../shared/services/util';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-product',
   imports: [MatCardModule, MatFormField, MatLabel, MatPaginator, MatTableModule, MatInputModule, MatIcon,MatFormFieldModule,MatButtonModule,
-    MatIconModule,],
+    MatIconModule,CommonModule],
   templateUrl: './product.html',
   styleUrl: './product.css'
 })
 export class Product implements OnInit {
 
+
+  isAdmin: any;
     private productService = inject(ProductService);
     private snackbar = inject(MatSnackBar);
     public dialog = inject(MatDialog);
-
+    private util = inject(Util);
 
 ngOnInit(): void {
     this.getProducts();
+    this.isAdmin = this.util.isAdmin();
 }
     displayedColumns: string[] = ['name', 'category', 'type', 'account', 'stock', 'picture', 'date', 'actions'];
     dataSource = new MatTableDataSource<ProductElement>;
