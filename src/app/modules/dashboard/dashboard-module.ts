@@ -5,6 +5,7 @@ import { Home } from './components/home/home';
 import { SharedModule } from '../shared/shared-module';
 import { Category } from '../category/components/category/category';
 import { Product } from '../product/product/product';
+import { MaterialModule } from '../shared/material-module';
 
 
 
@@ -18,7 +19,8 @@ import { Product } from '../product/product/product';
     Dashboard,
     SharedModule,
     Category,
-    Product
+    Product,
+    MaterialModule
   ]
 })
 export class DashboardModule { }

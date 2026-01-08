@@ -126,8 +126,24 @@ paginator!: MatPaginator;
         duration: 2000,
       });
     }
-}
 
+  exportExcel(){
+
+    this.categoryServices.exportCategories()
+        .subscribe((data:any)=>{
+          let file = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+          let fileUrl = URL.createObjectURL(file);
+          var anchor = document.createElement("a");
+          anchor.download = "clase de medicamento.xlsx";
+          anchor.href = fileUrl;
+          anchor.click();
+
+          this.openSnackBar('Exportación Exitosa', 'Ok');
+        },(error:any)=>{
+          this.openSnackBar('Error en la Exportación', 'Error');
+        })
+}
+}
 export interface CategoryElement {
   id: number;
   name: string;
